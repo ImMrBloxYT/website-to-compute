@@ -1,56 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <!-- 
-      This is an HTML comment
-      You can write text in a comment and the content won't be visible in the page
-    -->
-
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href="https://glitch.com/favicon.ico" />
-
-  <!--
-      This is the page head - it contains info the browser uses
-      Like the title, which appears on the browser tab but not inside the page
-      Further down you'll see the content that displays in the page
-    -->
-  <title>Hello World!</title>
-
-  <!-- The website stylesheet -->
-  <link rel="stylesheet" href="/style.css" />
-
-  <!-- The website JavaScript file -->
-  <script src="/script.js" defer></script>
+  <meta charset="UTF-8">
+  <title>Editable Participant Record</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      display: flex;
+      font-family: sans-serif;
+      height: 100vh;
+    }
+    #left, #right {
+      padding: 20px;
+      overflow: auto;
+    }
+    #left {
+      width: 60%;
+      background: #fdfdfd;
+      border-right: 2px solid #ccc;
+    }
+    #right {
+      width: 40%;
+      background: #1e1e1e;
+      color: #d4d4d4;
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+    .box {
+      border: 1px solid #000;
+      margin-top: 10px;
+      display: grid;
+      gap: 0;
+    }
+    .photo {
+      width: 100px;
+      height: 120px;
+      background: #e6a6a6;
+      border: 1px solid #000;
+    }
+    .header {
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .editable {
+      min-height: 20px;
+      padding: 5px;
+      border: 1px solid #000;
+    }
+    .editable:focus {
+      outline: 2px solid dodgerblue;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .section {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .tall {
+      height: 100px;
+    }
+  </style>
 </head>
-
 <body>
-  <!--
-      The body includes the content you see in the page
-      Each element is defined using tags, like this <div></div>
-      The attributes like class="wrapper" let us style elements in the CSS
-    -->
-  <div class="wrapper">
-    <div class="content" role="main">
-      <h1 class="title">Oh hi website!</h1>
-      <img src="/cool-website.svg" class="illustration" alt="cool website" />
-      <div class="instructions">
-        <p>
-          Fork <a href="https://github.com/glitchdotcom/website-to-compute">this project</a> and open it in a GitHub Codespace.
-        </p>
-        <p> Follow the steps in the README to deploy your new website to Fastly in a few steps!
-        </p>
-
+  <div id="left">
+    <div class="header editable" contenteditable="true">000</div>
+    <div class="row">
+      <div class="photo"></div>
+      <div style="flex:1; display:grid;">
+        <div class="editable" contenteditable="true">Name</div>
+        <div class="editable" contenteditable="true">Date of Birth</div>
+        <div class="editable" contenteditable="true">Address</div>
       </div>
+    </div>
 
-      <footer class="footer">
-        <div>
-          <a class="remix" href="https://github.com/glitchdotcom/website-to-compute">🚧 Get your own site</a>
+    <div class="row">
+      <div style="flex:1;">
+        <div class="box">
+          <div class="editable" contenteditable="true">Family</div>
+          <div class="editable" contenteditable="true"></div>
+          <div class="editable" contenteditable="true"></div>
         </div>
-      </footer>
+      </div>
+      <div style="flex:1;">
+        <div class="box">
+          <div class="editable" contenteditable="true">Finance</div>
+          <div class="editable" contenteditable="true"></div>
+          <div class="editable" contenteditable="true"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="editable" contenteditable="true">Violations</div>
+      <div class="section">
+        <div class="editable tall" contenteditable="true"></div>
+        <div class="editable tall" contenteditable="true"></div>
+        <div class="editable tall" contenteditable="true"></div>
+      </div>
     </div>
   </div>
-</body>
 
+  <div id="right">
+    <!-- Live HTML preview -->
+  </div>
+
+  <script>
+    function updatePreview() {
+      const container = document.getElementById('left').cloneNode(true);
+      container.querySelectorAll('.editable').forEach(el => {
+        el.removeAttribute('contenteditable');
+        el.classList.remove('editable');
+      });
+      document.getElementById('right').textContent = container.innerHTML.trim();
+    }
+
+    document.querySelectorAll('.editable').forEach(el => {
+      el.addEventListener('input', updatePreview);
+    });
+
+    updatePreview();
+  </script>
+</body>
 </html>
